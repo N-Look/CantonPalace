@@ -6,13 +6,14 @@
     <title>Menu - Canton Palace Trinidad</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body class="menu-page">
     <!-- Mobile Header -->
     <div class="mobile-header">
         <div class="mobile-header-content">
             <a href="index.html" class="mobile-logo">
-                <img src="/images/logo.png" alt="Logo">
+                Canton Palace
             </a>
             <button class="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
@@ -32,29 +33,58 @@
         </nav>
     </header>
 
-    <div class="menu-layout">
-        <div class="menu-hero">
-            <div class="menu-nav">
-                <button class="menu-nav-btn" id="appetizers-btn">APPETIZERS & SOUPS</button>
-                <button class="menu-nav-btn" id="poultry-btn">POULTRY</button>
-                <button class="menu-nav-btn" id="seafood-btn">SEAFOOD</button>
-                <button class="menu-nav-btn" id="beef-btn">BEEF</button>
-                <button class="menu-nav-btn" id="pork-btn">PORK</button>
-                <button class="menu-nav-btn" id="noodlesrice-btn">NOODLES & RICE</button>
-                <button class="menu-nav-btn" id="vegetables-btn">VEGETABLES</button>
-                <button class="menu-nav-btn" id="combinations-btn">COMBINATIONS</button>
+    <div class="menu-container-new">
+        <div class="menu-sidebar">
+            <div class="sidebar-decoration">
+                <i class="fas fa-utensils"></i>
             </div>
-            <div class="menu-image">
-                <img id="category-image" src="/images/food.jpg" alt="Featured Dish">
+            <h3 class="sidebar-title">Our Menu</h3>
+            <div class="menu-categories">
+                <a class="category-link" id="appetizers-btn">
+                    Appetizers & Soups
+                </a>
+                <a class="category-link" id="poultry-btn">
+                    Poultry
+                </a>
+                <a class="category-link" id="seafood-btn">
+                    Seafood
+                </a>
+                <a class="category-link" id="beef-btn">
+                    Beef
+                </a>
+                <a class="category-link" id="pork-btn">
+                    Pork
+                </a>
+                <a class="category-link" id="noodlesrice-btn">
+                    Noodles & Rice
+                </a>
+                <a class="category-link" id="vegetables-btn">
+                    Vegetables
+                </a>
+                <a class="category-link" id="combinations-btn">
+                    Combinations
+                </a>
             </div>
         </div>
 
-        <main class="menu-container">
-            <div class="menu-section fade-in">
-                <h2>OUR MENU</h2>
-                <p class="menu-intro">Select a category from the left to view our dishes.</p>
-                <div class="menu-items">
+        <main class="menu-content">
+            <div class="menu-header">
+                <div class="menu-decoration">
+                    <span class="decoration-line"></span>
+                    <i class="fas fa-dragon"></i>
+                    <span class="decoration-line"></span>
                 </div>
+                <h2 class="selected-category">OUR MENU</h2>
+                <div class="menu-decoration">
+                    <span class="decoration-line"></span>
+                    <i class="fas fa-utensils"></i>
+                    <span class="decoration-line"></span>
+                </div>
+            </div>
+            
+            <p class="menu-intro">Select a category to view our dishes.</p>
+            <div class="menu-items">
+                <!-- Menu items will be populated here by JavaScript -->
             </div>
         </main>
     </div>

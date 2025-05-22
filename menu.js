@@ -22,12 +22,11 @@ async function loadMenuData() {
 function displayMenuItems(items) {
     const menuItems = document.querySelector('.menu-items');
     const menuIntro = document.querySelector('.menu-intro');
-    const menuTitle = document.querySelector('.menu-section h2');
+    const menuTitle = document.querySelector('.selected-category');
     menuItems.innerHTML = '';
 
     // Update the intro text
     menuIntro.style.display = 'none';
-    menuTitle.style.display = 'none';
 
     // Create category heading based on the selected category
     const categoryTitles = {
@@ -110,22 +109,21 @@ function displayMenuItems(items) {
 
 let menuData = [];
 
-function updateMenuImage(category) {
-    const imageMap = {
-        'appetizers': '/images/appetizers.png',
-        'poultry': '/images/poultry.png',
-        'seafood': '/images/seafood.png',
-        'beef': '/images/beef.png',
-        'pork': '/images/pork.png',
-        'noodlesrice': '/images/noodles.png',
-        'vegetables': '/images/vegetables.png',
-        'combinations': '/images/combinations.png',
+function updateCategoryTitle(category) {
+    const categoryTitleMap = {
+        'appetizers': 'APPETIZERS & SOUPS',
+        'poultry': 'POULTRY DISHES',
+        'seafood': 'SEAFOOD DISHES',
+        'beef': 'BEEF DISHES',
+        'pork': 'PORK DISHES',
+        'noodlesrice': 'NOODLES & RICE',
+        'vegetables': 'VEGETABLE DISHES',
+        'combinations': 'COMBINATION PLATTERS',
     };
-
-    const menuImage = document.querySelector('#category-image');
-    if (menuImage) {
-        menuImage.src = imageMap[category] || '/images/food.jpg';
-        menuImage.alt = `${category.charAt(0).toUpperCase() + category.slice(1)} Dishes`;
+    
+    const selectedCategory = document.querySelector('.selected-category');
+    if (selectedCategory) {
+        selectedCategory.textContent = categoryTitleMap[category] || 'OUR MENU';
     }
 }
 
@@ -149,19 +147,21 @@ async function showCategory(category) {
     const filteredItems = menuData.filter(item => types.includes(item.category.toLowerCase()));
     displayMenuItems(filteredItems, category);
 
-    // Update active button
-    document.querySelectorAll('.menu-nav-btn').forEach(btn => {
-        btn.classList.remove('active');
+    // Update active link
+    document.querySelectorAll('.category-link').forEach(link => {
+        link.classList.remove('active');
     });
     document.getElementById(`${category}-btn`).classList.add('active');
-    updateMenuImage(category);
+    
+    // Update category title
+    updateCategoryTitle(category);
 }
 
 // Initialize when the page loads - but don't show any category
 document.addEventListener('DOMContentLoaded', async () => {
     menuData = await loadMenuData(); // Pre-load the data
     
-    // Add event listeners to category buttons
+    // Add event listeners to category links
     document.getElementById('appetizers-btn').addEventListener('click', () => showCategory('appetizers'));
     document.getElementById('poultry-btn').addEventListener('click', () => showCategory('poultry'));
     document.getElementById('seafood-btn').addEventListener('click', () => showCategory('seafood'));
