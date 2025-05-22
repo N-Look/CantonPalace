@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Manage Menu</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #8b0000;
+            --secondary-color: #e63946;
+            --accent-color: #ffd700;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --gray-color: #6c757d;
+            --border-color: #dee2e6;
+            --hover-color: #f2f2f2;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0;
+            background-color: #f4f4f4; 
+            color: #333; 
+        }
+        
+        .container { 
+            max-width: 1200px;
+            margin: 30px auto;
+            background-color: #fff; 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: 0 0 20px rgba(0,0,0,0.1); 
+        }
+        
+        h1, h2, h3 { 
+            color: var(--primary-color); 
+            margin-bottom: 20px;
+        }
+        
+        /* Form Controls */
+        input[type="text"], 
+        input[type="number"], 
+        input[type="email"], 
+        input[type="password"], 
+        textarea, 
+        select {
+            width: 100%; 
+            padding: 12px; 
+            margin-bottom: 15px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(139,0,0,0.2);
+        }
+        
+        button {
+            padding: 12px 20px; 
+            background-color: var(--primary-color); 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        button:hover { 
+            background-color: #6b0000; 
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .error { 
+            color: var(--danger-color); 
+            margin-bottom: 15px; 
+            font-weight: 500;
+        }
+        
+        .success {
+            color: var(--success-color);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        /* Admin Table Design */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .admin-table th {
+            background-color: #f2f2f2;
+            padding: 15px;
+            text-align: left;
+            color: #555;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .admin-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+        
+        .admin-table tr:hover {
+            background-color: var(--hover-color);
+        }
+        
+        .admin-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            color: var(--dark-color);
+            transition: color 0.2s;
+        }
+        
+        .edit-btn:hover {
+            color: var(--warning-color);
+        }
+        
+        .view-btn:hover {
+            color: var(--info-color);
+        }
+        
+        .options-btn:hover {
+            color: var(--gray-color);
+        }
+        
+        /* Header Section */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        /* Search Bar */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            max-width: 100%;
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: 30px;
+            padding: 8px 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        
+        .search-bar input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 10px;
+            font-size: 16px;
+            margin: 0;
+        }
+        
+        .search-icon {
+            color: #aaa;
+            margin-right: 10px;
+        }
+        
+        /* Add Item Button */
+        .add-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        .add-btn:hover {
+            background-color: #6b0000;
+            transform: translateY(-2px);
+        }
+        
+        .actions-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        /* Modal Popup */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            overflow: auto;
+            animation: fadeIn 0.3s;
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 50px auto;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s;
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin: 0;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            padding: 0;
+            margin: 0;
+            transition: color 0.2s;
+        }
+        
+        .modal-close:hover {
+            color: var(--danger-color);
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .btn-cancel {
+            background-color: var(--gray-color);
+        }
+        
+        .category-badge {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        /* Status Messages */
+        .status {
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-width: 300px;
+        }
+        
+        .status.error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .status.success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        /* Login Form */
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .login-container h1 {
+            margin-bottom: 30px;
+        }
+        
+        .btn-logout {
+            background-color: var(--gray-color);
+        }
+        
+        /* Checkbox styling */
+        .checkbox-container {
+            display: block;
+            position: relative;
+            padding-left: 25px;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+        
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 18px;
+            width: 18px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+        }
+        
+        .checkbox-container:hover input ~ .checkmark {
+            border-color: #aaa;
+        }
+        
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+        
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+        
+        .checkbox-container .checkmark:after {
+            left: 6px;
+            top: 3px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        #adminSection { 
+            display: none; 
+        }
+
+        /* Category Filter Styles */
+        .category-filter {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .category-filter select {
+            max-width: 250px;
+            margin-bottom: 0;
+        }
+
+        .category-filter label {
+            font-weight: 600;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="loginSection" class="login-container">
+            <h1>Admin Login</h1>
+            <div class="form-group">
+                <input type="email" id="email" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+            <button id="loginButton">Login</button>
+            <p id="authError" class="error"></p>
+        </div>
+
+        <div id="adminSection">
+            <div class="admin-header">
+                <h1>Menu Management</h1>
+                <button id="logoutButton" class="btn-logout">Logout</button>
+            </div>
+            
+            <div class="actions-wrapper">
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Search...">
+                </div>
+                
+                <button id="addItemButton" class="add-btn">
+                    <i class="fas fa-plus"></i> Add Item
+                </button>
+            </div>
+            
+            <div class="category-filter">
+                <label for="categoryFilter">Filter by Category:</label>
+                <select id="categoryFilter">
+                    <option value="all">All Categories</option>
+                    <!-- Categories will be populated dynamically -->
+                </select>
+            </div>
+            
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th width="100">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="menuItemsTableBody">
+                    <!-- Menu items will be loaded here -->
+                </tbody>
+            </table>
+            
+            <div id="statusMessage" class="status"></div>
+        </div>
+    </div>
+    
+    <!-- Add Item Modal -->
+    <div id="addItemModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Menu Item</h3>
+                <button class="modal-close" id="closeAddModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addMenuItemForm">
+                    <div class="form-row">
+                        <div class="form-col">
+                            <input type="text" id="itemName" placeholder="Item Name" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <select id="itemCategory" required>
+                                <option value="">Select Category</option>
+                                <optgroup label="Appetizers">
+                                    <option value="appetizer">Appetizer</option>
+                                    <option value="vegetarian appetizer">Vegetarian Appetizer</option>
+                                    <option value="soup">Soup</option>
+                                    <option value="vegetarian soup">Vegetarian Soup</option>
+                                </optgroup>
+                                <optgroup label="Poultry">
+                                    <option value="poultry">Chicken and Duck</option>
+                                </optgroup>
+                                <optgroup label="Seafood">
+                                    <option value="fish">Fish</option>
+                                    <option value="lobster">Lobster</option>
+                                    <option value="scallop">Scallop</option>
+                                    <option value="shrimp">Shrimp</option>
+                                    <option value="lambie">Lambie</option>
+                                    <option value="squid">Squid</option>
+                                </optgroup>
+                                <optgroup label="Meat">
+                                    <option value="beef">Beef</option>
+                                    <option value="pork">Pork</option>
+                                    <option value="lapchong">Lap Chong</option>
+                                </optgroup>
+                                <optgroup label="Noodles & Rice">
+                                    <option value="chow mein">Chow Mein</option>
+                                    <option value="special noodles">Special Noodles</option>
+                                    <option value="lo mein">Lo Mein</option>
+                                    <option value="rice">Rice</option>
+                                </optgroup>
+                                <optgroup label="Vegetables">
+                                    <option value="vegetables">Vegetables</option>
+                                    <option value="veg for vegetarians">Vegetarian Specialties</option>
+                                    <option value="black mushroom">Black Mushroom</option>
+                                </optgroup>
+                                <optgroup label="Combinations">
+                                    <option value="combination">Combinations</option>
+                                    <option value="veg combination">Vegetarian Combinations</option>
+                                    <option value="seafood combination">Seafood Combinations</option>
+                                    <option value="meat seafood combination">Meat & Seafood Combinations</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <input type="text" id="itemQuantity" placeholder="Quantity (e.g., Each, Per Doz.)">
+                        </div>
+                        <div class="form-col">
+                            <input type="number" id="itemPrice" placeholder="Price (e.g., 12.99)" step="0.01" required>
+                        </div>
+                    </div>
+                    
+                    <textarea id="itemDescription" placeholder="Description" rows="4"></textarea>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" id="cancelButton">Cancel</button>
+                <button id="submitButton">Add Item</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- SUPABASE CONFIGURATION ---
+        const SUPABASE_URL = 'https://lqajpfjaygbmhtamcbsy.supabase.co'; 
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxYWpwZmpheWdibWh0YW1jYnN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5MzU5MzIsImV4cCI6MjA2MzUxMTkzMn0.-GMQcBo0HkjSFV0cHFL1wXFVeHX6qAIxSaN-0npddZ0';
+
+        if (SUPABASE_URL === 'YOUR_SUPABASE_URL' || SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY') {
+            alert('Please configure your Supabase URL and Anon Key in admin.html');
+        }
+
+        const { createClient } = supabase;
+        const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // --- DOM ELEMENTS ---
+        const loginSection = document.getElementById('loginSection');
+        const adminSection = document.getElementById('adminSection');
+        const loginButton = document.getElementById('loginButton');
+        const logoutButton = document.getElementById('logoutButton');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const authError = document.getElementById('authError');
+        
+        const addMenuItemForm = document.getElementById('addMenuItemForm');
+        const itemNameInput = document.getElementById('itemName');
+        const itemDescriptionInput = document.getElementById('itemDescription');
+        const itemPriceInput = document.getElementById('itemPrice');
+        const itemQuantityInput = document.getElementById('itemQuantity');
+        const itemCategoryInput = document.getElementById('itemCategory');
+        const menuItemsTableBody = document.getElementById('menuItemsTableBody');
+        const statusMessage = document.getElementById('statusMessage');
+        const submitButton = document.getElementById('submitButton');
+        const cancelButton = document.getElementById('cancelButton');
+        const searchInput = document.getElementById('searchInput');
+        const addItemButton = document.getElementById('addItemButton');
+        const addItemModal = document.getElementById('addItemModal');
+        const closeAddModal = document.getElementById('closeAddModal');
+        const categoryFilterSelect = document.getElementById('categoryFilter');
+
+        let currentEditItemId = null;
+        let allMenuItems = []; // Store all menu items for search functionality
+        let uniqueCategories = new Set(); // Store unique categories for filter
+
+        // --- AUTHENTICATION LOGIC ---
+        
+        // Check initial auth state
+        async function checkUserSession() {
+            const { data: { session } } = await _supabase.auth.getSession();
+            if (session) {
+                // User is logged in. Now, verify if they are an admin.
+                // For simplicity, we'll assume any logged-in user is an admin for now.
+                // In a real app, you'd check a role or custom claim.
+                console.log('User session found:', session.user);
+                showAdminPanel(session.user);
+            } else {
+                showLoginPanel();
+            }
+        }
+
+        loginButton.addEventListener('click', async () => {
+            authError.textContent = '';
+            const email = emailInput.value;
+            const password = passwordInput.value;
+
+            if (!email || !password) {
+                authError.textContent = 'Email and password are required.';
+                return;
+            }
+
+            try {
+                const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
+
+                if (error) {
+                    authError.textContent = 'Login failed: ' + error.message;
+                    console.error('Login error:', error);
+                } else if (data && data.user) { // Check data and data.user
+                    // For now, assume logged-in user is admin.
+                    // TODO: Implement proper admin role checking.
+                    console.log('Login successful:', data.user);
+                    showAdminPanel(data.user);
+                } else {
+                    // This case handles if 'error' is null but 'data.user' is null.
+                    // This can happen for example if MFA is required or other flows where login isn't fully complete.
+                    authError.textContent = 'Login process initiated, but a user session was not established. This might be due to an incomplete multi-step login (like MFA) or other reasons. Please check for any prompts or console messages.';
+                    console.warn('Login status: No error, but no user session established. Data:', data);
+                }
+            } catch (e) {
+                authError.textContent = 'An unexpected error occurred during the login attempt. Please check the console.';
+                console.error('Unexpected exception during signInWithPassword call:', e);
+            }
+        });
+
+        logoutButton.addEventListener('click', async () => {
+            const { error } = await _supabase.auth.signOut();
+            if (error) {
+                console.error('Logout error:', error);
+                alert('Logout failed: ' + error.message);
+            } else {
+                showLoginPanel();
+                console.log('Logged out');
+            }
+        });
+
+        function showAdminPanel(user) {
+            loginSection.style.display = 'none';
+            adminSection.style.display = 'block';
+            loadMenuItems();
+        }
+
+        function showLoginPanel() {
+            loginSection.style.display = 'block';
+            adminSection.style.display = 'none';
+            menuItemsTableBody.innerHTML = ''; // Clear items when logged out
+        }
+
+        // --- MODAL HANDLING ---
+        
+        // Open the add item modal
+        addItemButton.addEventListener('click', () => {
+            resetForm();
+            addItemModal.style.display = 'block';
+        });
+        
+        // Close modal when clicking close button
+        closeAddModal.addEventListener('click', () => {
+            addItemModal.style.display = 'none';
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (event) => {
+            if (event.target === addItemModal) {
+                addItemModal.style.display = 'none';
+            }
+        });
+        
+        // Cancel button in modal
+        cancelButton.addEventListener('click', () => {
+            addItemModal.style.display = 'none';
+            resetForm();
+        });
+
+        // --- CRUD OPERATIONS FOR MENU ITEMS ---
+
+        // Load and display menu items
+        async function loadMenuItems() {
+            menuItemsTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Loading...</td></tr>';
+            statusMessage.style.display = 'none';
+
+            const { data: items, error } = await _supabase
+                .from('menu_items')
+                .select('*')
+                .order('category', { ascending: true });
+
+            if (error) {
+                console.error('Error loading menu items:', error);
+                menuItemsTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Error loading items. Check console for details.</td></tr>';
+                showStatusMessage('Error loading items: ' + (error.message || 'See console for full error object.'), 'error');
+                return;
+            }
+
+            if (!items || items.length === 0) {
+                menuItemsTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No menu items found. Add some!</td></tr>';
+                return;
+            }
+
+            allMenuItems = items; // Store all items for searching
+            
+            // Extract unique categories for the filter dropdown
+            uniqueCategories = new Set();
+            items.forEach(item => {
+                if (item.category) {
+                    uniqueCategories.add(item.category);
+                }
+            });
+            
+            // Populate category filter
+            populateCategoryFilter();
+            
+            // Display all items initially
+            displayMenuItems(items);
+        }
+
+        // Populate category filter dropdown
+        function populateCategoryFilter() {
+            // Clear existing options except the first one (All Categories)
+            while (categoryFilterSelect.options.length > 1) {
+                categoryFilterSelect.remove(1);
+            }
+            
+            // Add sorted categories to the dropdown
+            [...uniqueCategories].sort().forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categoryFilterSelect.appendChild(option);
+            });
+            
+            // Add event listener for category filter changes
+            categoryFilterSelect.addEventListener('change', filterByCategory);
+        }
+        
+        // Filter items by selected category
+        function filterByCategory() {
+            const selectedCategory = categoryFilterSelect.value;
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            // If "All Categories" is selected and no search term
+            if (selectedCategory === 'all' && !searchTerm) {
+                displayMenuItems(allMenuItems);
+                return;
+            }
+            
+            // Filter by category and search term if applicable
+            let filteredItems = allMenuItems;
+            
+            if (selectedCategory !== 'all') {
+                filteredItems = filteredItems.filter(item => 
+                    item.category === selectedCategory
+                );
+            }
+            
+            if (searchTerm) {
+                filteredItems = filteredItems.filter(item => 
+                    item.name.toLowerCase().includes(searchTerm) || 
+                    (item.description && item.description.toLowerCase().includes(searchTerm)) ||
+                    (item.category && item.category.toLowerCase().includes(searchTerm)) ||
+                    (item.quantity && item.quantity.toLowerCase().includes(searchTerm)) ||
+                    (item.price && item.price.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            if (filteredItems.length === 0) {
+                menuItemsTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No items found matching your criteria.</td></tr>';
+            } else {
+                displayMenuItems(filteredItems);
+            }
+        }
+
+        function displayMenuItems(items) {
+            menuItemsTableBody.innerHTML = ''; // Clear loading/previous items
+            
+            // Sort items by category
+            const sortedItems = [...items].sort((a, b) => {
+                if (a.category !== b.category) {
+                    return (a.category || '').localeCompare(b.category || '');
+                }
+                // Within the same category, sort by name
+                return a.name.localeCompare(b.name);
+            });
+            
+            // Group items by category for visual separation
+            let currentCategory = null;
+            
+            sortedItems.forEach(item => {
+                // If we have a new category, add a visual separator
+                if (item.category !== currentCategory) {
+                    currentCategory = item.category;
+                }
+                
+                const tableRow = document.createElement('tr');
+                
+                // Name cell
+                const nameCell = document.createElement('td');
+                nameCell.textContent = item.name;
+                
+                // Category cell
+                const categoryCell = document.createElement('td');
+                if (item.category) {
+                    const categoryBadge = document.createElement('span');
+                    categoryBadge.className = 'category-badge';
+                    categoryBadge.textContent = item.category;
+                    categoryCell.appendChild(categoryBadge);
+                } else {
+                    categoryCell.textContent = 'N/A';
+                }
+                
+                // Quantity cell
+                const quantityCell = document.createElement('td');
+                quantityCell.textContent = item.quantity || 'N/A';
+                
+                // Price cell
+                const priceCell = document.createElement('td');
+                priceCell.textContent = item.price || 'N/A';
+                
+                // Actions cell
+                const actionsCell = document.createElement('td');
+                actionsCell.className = 'admin-actions';
+                
+                const editButton = document.createElement('button');
+                editButton.className = 'action-btn edit-btn';
+                editButton.innerHTML = '<i class="fas fa-edit"></i>';
+                editButton.title = 'Edit';
+                editButton.onclick = () => editItem(item.id);
+                
+                const viewButton = document.createElement('button');
+                viewButton.className = 'action-btn view-btn';
+                viewButton.innerHTML = '<i class="fas fa-eye"></i>';
+                viewButton.title = 'View';
+                viewButton.onclick = () => viewItem(item.id);
+                
+                const moreButton = document.createElement('button');
+                moreButton.className = 'action-btn options-btn';
+                moreButton.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
+                moreButton.title = 'More Options';
+                moreButton.onclick = () => showOptions(item.id, item.name);
+                
+                actionsCell.appendChild(editButton);
+                actionsCell.appendChild(viewButton);
+                actionsCell.appendChild(moreButton);
+                
+                // Add all cells to the row
+                tableRow.appendChild(nameCell);
+                tableRow.appendChild(categoryCell);
+                tableRow.appendChild(quantityCell);
+                tableRow.appendChild(priceCell);
+                tableRow.appendChild(actionsCell);
+                
+                menuItemsTableBody.appendChild(tableRow);
+            });
+        }
+        
+        // Show options menu (for more actions like delete)
+        function showOptions(itemId, itemName) {
+            if (confirm(`Do you want to delete "${itemName}"?`)) {
+                deleteItem(itemId, itemName);
+            }
+        }
+        
+        // View item details (placeholder for future functionality)
+        function viewItem(itemId) {
+            // For now, just do the same as edit but could be expanded with a view-only modal
+            editItem(itemId);
+        }
+
+        // Form submission handler - Add or Update items
+        submitButton.addEventListener('click', async () => {
+            if (!addMenuItemForm.reportValidity()) {
+                return; // Let browser handle required field validation
+            }
+            
+            statusMessage.style.display = 'none';
+
+            const name = itemNameInput.value;
+            const description = itemDescriptionInput.value;
+            const quantity = itemQuantityInput.value;
+            const category = itemCategoryInput.value;
+            const priceValue = parseFloat(itemPriceInput.value);
+
+            if (!name || isNaN(priceValue) || !category) {
+                showStatusMessage('Item name, category, and a valid price are required.', 'error');
+                return;
+            }
+
+            // Format price as "$XX.YY" for Supabase varchar column
+            const formattedPrice = `$${priceValue.toFixed(2)}`;
+
+            const itemData = {
+                name: name,
+                description: description,
+                quantity: quantity,
+                price: formattedPrice,
+                category: category
+            };
+
+            if (currentEditItemId) {
+                // ---- UPDATE item ----
+                const { data, error } = await _supabase
+                    .from('menu_items')
+                    .update(itemData)
+                    .eq('id', currentEditItemId)
+                    .select();
+
+                if (error) {
+                    console.error('Error updating item:', error);
+                    showStatusMessage('Error updating item: ' + error.message, 'error');
+                } else {
+                    console.log('Item updated:', data);
+                    addItemModal.style.display = 'none';
+                    resetForm();
+                    loadMenuItems(); // Refresh the list
+                    showStatusMessage('Item updated successfully!', 'success');
+                }
+            } else {
+                // ---- ADD new item ----
+                const { data, error } = await _supabase
+                    .from('menu_items')
+                    .insert([itemData])
+                    .select();
+
+                if (error) {
+                    console.error('Error adding item:', error);
+                    showStatusMessage('Error adding item: ' + error.message, 'error');
+                } else {
+                    console.log('Item added:', data);
+                    addItemModal.style.display = 'none';
+                    resetForm();
+                    loadMenuItems(); // Refresh the list
+                    showStatusMessage('Item added successfully!', 'success');
+                }
+            }
+        });
+
+        function resetForm() {
+            addMenuItemForm.reset();
+            currentEditItemId = null;
+            document.querySelector('.modal-title').textContent = 'Add New Menu Item';
+            submitButton.textContent = 'Add Item';
+        }
+
+        // Delete menu item
+        function deleteItem(itemId, itemName) {
+            statusMessage.style.display = 'none';
+
+            // Delete from Supabase
+            _supabase
+                .from('menu_items')
+                .delete()
+                .match({ id: itemId })
+                .then(({ error }) => {
+                    if (error) {
+                        console.error('Error deleting item:', error);
+                        showStatusMessage('Error deleting item: ' + error.message, 'error');
+                    } else {
+                        console.log('Item deleted:', itemId);
+                        loadMenuItems(); // Refresh the list
+                        showStatusMessage('Item deleted successfully!', 'success');
+                    }
+                });
+        }
+
+        // Edit menu item
+        async function editItem(itemId) {
+            statusMessage.style.display = 'none';
+            try {
+                const { data: item, error } = await _supabase
+                    .from('menu_items')
+                    .select('*')
+                    .eq('id', itemId)
+                    .single();
+
+                if (error) {
+                    throw error;
+                }
+
+                if (item) {
+                    // Fill the form with item data
+                    itemNameInput.value = item.name;
+                    itemDescriptionInput.value = item.description || '';
+                    itemQuantityInput.value = item.quantity || '';
+                    itemCategoryInput.value = item.category || '';
+                    // Assuming price is stored like "$12.99", remove '$' for the number input
+                    itemPriceInput.value = item.price ? parseFloat(item.price.replace('$', '')) : '';
+                    
+                    // Update form state and show modal
+                    currentEditItemId = item.id;
+                    document.querySelector('.modal-title').textContent = 'Edit Menu Item';
+                    submitButton.textContent = 'Update Item';
+                    addItemModal.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error fetching item for edit:', error);
+                showStatusMessage('Error fetching item details: ' + error.message, 'error');
+            }
+        }
+        
+        // --- SEARCH FUNCTIONALITY ---
+        
+        // Real-time search as user types
+        searchInput.addEventListener('input', performSearch);
+        
+        function performSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const selectedCategory = categoryFilterSelect.value;
+            
+            let filteredItems = allMenuItems;
+            
+            // Apply category filter if not "all"
+            if (selectedCategory !== 'all') {
+                filteredItems = filteredItems.filter(item => 
+                    item.category === selectedCategory
+                );
+            }
+            
+            // Apply search term filter if there is one
+            if (searchTerm) {
+                filteredItems = filteredItems.filter(item => 
+                    item.name.toLowerCase().includes(searchTerm) || 
+                    (item.description && item.description.toLowerCase().includes(searchTerm)) ||
+                    (item.category && item.category.toLowerCase().includes(searchTerm)) ||
+                    (item.quantity && item.quantity.toLowerCase().includes(searchTerm)) ||
+                    (item.price && item.price.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            if (filteredItems.length === 0) {
+                menuItemsTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No items found matching your criteria.</td></tr>';
+            } else {
+                displayMenuItems(filteredItems);
+            }
+        }
+        
+        // --- HELPER FUNCTIONS ---
+        
+        function showStatusMessage(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status ${type}`;
+            statusMessage.style.display = 'block';
+            
+            // Auto-hide the message after 3 seconds
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 3000);
+        }
+        
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check user session on page load
+            checkUserSession();
+        });
+    </script>
+</body>
+</html> 
