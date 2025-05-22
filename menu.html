@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - Canton Palace Trinidad</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="menu-page">
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <div class="mobile-header-content">
+            <a href="index.html" class="mobile-logo">
+                <img src="/images/logo.png" alt="Logo">
+            </a>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="main-header">
+        <nav>
+            <div class="nav-links fade-in">
+                <a href="index.html">HOME</a>
+                <a href="menu.html">MENU</a>
+                <a href="#about">ABOUT</a>
+                <a href="#contact">CONTACT</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="menu-layout">
+        <div class="menu-hero">
+            <div class="menu-nav">
+                <button class="menu-nav-btn" id="appetizers-btn">APPETIZERS & SOUPS</button>
+                <button class="menu-nav-btn" id="poultry-btn">POULTRY</button>
+                <button class="menu-nav-btn" id="seafood-btn">SEAFOOD</button>
+                <button class="menu-nav-btn" id="beef-btn">BEEF</button>
+                <button class="menu-nav-btn" id="pork-btn">PORK</button>
+                <button class="menu-nav-btn" id="noodlesrice-btn">NOODLES & RICE</button>
+                <button class="menu-nav-btn" id="vegetables-btn">VEGETABLES</button>
+                <button class="menu-nav-btn" id="combinations-btn">COMBINATIONS</button>
+            </div>
+            <div class="menu-image">
+                <img id="category-image" src="/images/food.jpg" alt="Featured Dish">
+            </div>
+        </div>
+
+        <main class="menu-container">
+            <div class="menu-section fade-in">
+                <h2>OUR MENU</h2>
+                <p class="menu-intro">Select a category from the left to view our dishes.</p>
+                <div class="menu-items">
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Canton Palace Limited. All rights reserved.</p>
+    </footer>
+
+    <script src="animations.js"></script>
+    <script type="module" src="menu.js"></script>
+</body>
+</html>
