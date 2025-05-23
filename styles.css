@@ -11,8 +11,7 @@ body {
 }
 
 .home-page {
-    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
-                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect width="400" height="400" fill="white"/><path d="M0 0h400v400H0z" fill="%23f0f0f0" fill-opacity="0.4"/></svg>');
+    background: #f9f5ea;
     color: #333;
 }
 
@@ -29,7 +28,7 @@ body {
 }
 
 .main-header.scrolled {
-    background: rgba(255, 255, 255, 0.95);
+    background: #f9f5ea;
 }
 
 .address-bar {
@@ -62,9 +61,6 @@ nav a {
     transition: color 0.3s ease;
 }
 
-    :hover {
-    color: white;
-}
 
 .nav-links a {
     color: white;
@@ -501,7 +497,7 @@ footer {
 /* Info Sections Styles */
 .info-sections {
     padding: 0;
-    background: #fff;
+    background: #f9f5ea;
     position: relative;
     z-index: 2;     
 }
@@ -533,7 +529,7 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background: #fff;
+    background: #f9f5ea;
     box-shadow: none;
     border: none;
     position: relative;
@@ -665,7 +661,7 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background: #fff;
+    background: #f9f5ea;
     box-shadow: none;
     border: none;
     position: relative;

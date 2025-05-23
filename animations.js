@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             header.classList.add('scrolled');
-        } else {
+        } else if (!document.body.classList.contains('menu-page')) {
             header.classList.remove('scrolled');
         }
     });
