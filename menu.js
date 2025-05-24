@@ -81,6 +81,19 @@ function displayMenuItems(items) {
             const menuItem = document.createElement('div');
             menuItem.className = 'menu-item';
 
+            // Add image container with default image or custom image
+            const imageContainer = document.createElement('div');
+            imageContainer.className = 'item-image-container';
+            const image = document.createElement('img');
+            image.src = item.image_url || '/images/foodpreview.jpg'; // Use default image if no specific image
+            image.alt = item.name;
+            image.className = 'item-image';
+            imageContainer.appendChild(image);
+            menuItem.appendChild(imageContainer);
+
+            const contentContainer = document.createElement('div');
+            contentContainer.className = 'item-content';
+
             const header = document.createElement('div');
             header.className = 'item-header';
 
@@ -93,15 +106,16 @@ function displayMenuItems(items) {
 
             header.appendChild(name);
             header.appendChild(price);
-            menuItem.appendChild(header);
+            contentContainer.appendChild(header);
 
             if (item.description) {
                 const description = document.createElement('p');
                 description.className = 'description';
                 description.textContent = item.description;
-                menuItem.appendChild(description);
+                contentContainer.appendChild(description);
             }
 
+            menuItem.appendChild(contentContainer);
             menuItems.appendChild(menuItem);
         });
     });

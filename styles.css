@@ -1,3 +1,13 @@
+:root {
+    --color-primary: #8b0000;
+    --color-text: #333;
+    --color-text-light: #666;
+    --color-background: #f9f5ea;
+    --color-border: #d1c9b8;
+    --color-white: white;
+    --transition-standard: all 0.3s ease;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -11,8 +21,8 @@ body {
 }
 
 .home-page {
-    background: #f9f5ea;
-    color: #333;
+    background: var(--color-background);
+    color: var(--color-text);
 }
 
 .main-header {
@@ -28,7 +38,7 @@ body {
 }
 
 .main-header.scrolled {
-    background: #f9f5ea;
+    background: #E4DAD1;
 }
 
 .address-bar {
@@ -43,7 +53,7 @@ nav {
     max-width: 1280px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding: 0rem 1rem;
 }
@@ -61,14 +71,13 @@ nav a {
     transition: color 0.3s ease;
 }
 
-
 .nav-links a {
-    color: white;
+    color: var(--color-white);
     text-decoration: none;
     font-size: 0.9rem;
     letter-spacing: 2px;
     text-transform: uppercase;
-    transition: color 0.3s;
+    transition: var(--transition-standard);
 }
 
 .nav-links a:hover {
@@ -76,11 +85,11 @@ nav a {
 }
 
 .main-header.scrolled .nav-links a {
-    color: #333;
+    color: var(--color-text);
 }
 
 .main-header.scrolled .nav-links a:hover {
-    color: #8b0000;
+    color: var(--color-primary);
 }
 
 /* Main Content */
@@ -136,10 +145,9 @@ footer {
 
 /* Updated Menu Page Styles */
 .menu-page {
-    background: #f9f5ea;
+    background: var(--color-background);
     padding-top: 0;
-    font-family: 'Crimson Text', serif;
-    color: #333;
+    color: var(--color-text);
 }
 
 /* New Menu Container */
@@ -152,7 +160,7 @@ footer {
 /* Updated Menu Sidebar */
 .menu-sidebar {
     width: 30%;
-    background: #f9f5ea;
+    background: var(--color-background);
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -162,9 +170,8 @@ footer {
     height: 100vh;
     padding-top: 80px;
     padding-bottom: 40px;
-    border-right: 1px solid #e0d5c0;
+    border-right: 1px solid var(--color-border);
     text-align: center;
-    font-family: 'Crimson Text', serif;
 }
 
 .sidebar-decoration {
@@ -190,9 +197,9 @@ footer {
 
 .category-link {
     display: block;
-    color: #333;
+    color: var(--color-text);
     padding: 8px 0;
-    transition: all 0.25s ease;
+    transition: var(--transition-standard);
     text-decoration: none;
     cursor: pointer;
     position: relative;
@@ -200,7 +207,6 @@ footer {
     letter-spacing: 0.7px;
     font-size: 15px;
     border-bottom: 1px solid transparent;
-    font-family: 'Crimson Text', serif;
     font-weight: 500;
 }
 
@@ -211,7 +217,7 @@ footer {
     bottom: -2px;
     width: 100%;
     height: 1px;
-    background-color: #8b0000;
+    background-color: var(--color-primary);
     transform: scaleX(0);
     transition: transform 0.3s ease;
     transform-origin: center;
@@ -224,7 +230,7 @@ footer {
 
 .category-link:hover, 
 .category-link.active {
-    color: #8b0000;
+    color: var(--color-primary);
 }
 
 .category-icon {
@@ -244,7 +250,6 @@ footer {
 .menu-content {
     width: 70%;
     margin-left: 30%;
-    font-family: 'Crimson Text', serif;
 }
 
 .menu-header {
@@ -254,11 +259,10 @@ footer {
 
 .selected-category {
     font-size: 2.4rem;
-    color: #8b0000;
+    color: var(--color-primary);
     margin: 1.2rem 0;
     font-weight: normal;
     letter-spacing: 1.2px;
-    font-family: 'Crimson Text', serif;
 }
 
 .menu-decoration {
@@ -277,18 +281,17 @@ footer {
 }
 
 .menu-decoration i {
-    color: #8b0000;
+    color: var(--color-primary);
     font-size: 1.2rem;
 }
 
 /* Menu Intro */
 .menu-intro {
     text-align: center;
-    color: #666;
+    color: var(--color-text-light);
     font-size: 1.2rem;
     margin-bottom: 2rem;
     font-style: italic;
-    font-family: 'Crimson Text', serif;
 }
 
 /* Updated Menu Items */
@@ -301,20 +304,65 @@ footer {
 
 /* Category Heading */
 .category-heading {
-    font-size: 1.6rem;
-    color: #8b0000;
-    margin-top: 0.5rem;
-    margin-bottom: 1.2rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #d1c9b8;
+    font-size: 1.8rem;
+    color: var(--color-primary);
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
     font-weight: normal;
     letter-spacing: 0.7px;
-    font-family: 'Crimson Text', serif;
+    position: relative;
+}
+
+.category-heading:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background-color: var(--color-primary);
 }
 
 /* Menu Item */
 .menu-item {
-    margin-bottom: 1rem;
+    padding: 1rem 0;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.menu-item:hover {
+    transform: translateX(5px);
+    background-color: rgba(139, 0, 0, 0.02);
+}
+
+.item-image-container {
+    flex: 0 0 100px;
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.item-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.item-image:hover {
+    transform: scale(1.05);
+}
+
+.item-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 60px;
 }
 
 .item-header {
@@ -323,52 +371,34 @@ footer {
     align-items: baseline;
     margin-bottom: 0.3rem;
     position: relative;
-}
-
-.item-header:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0.5em;
-    border-bottom: 2px dotted rgba(209, 201, 184, 0.7);
-    width: 100%;
-    z-index: 0;
+    gap: 1rem;
 }
 
 .item-header h3 {
     font-size: 1.15rem;
-    font-weight: normal;
-    color: #333;
+    color: var(--color-text);
     font-weight: 600;
-    margin-right: 1rem;
+    margin: 0;
     position: relative;
     z-index: 1;
-    background: #f9f5ea;
     padding-right: 0.5rem;
-    font-family: 'Crimson Text', serif;
 }
 
 .price {
     font-size: 1.05rem;
-    color: #8b0000;
+    color: var(--color-primary);
     min-width: 60px;
     text-align: right;
     font-weight: 600;
-    position: relative;
-    z-index: 1;
-    background: #f9f5ea;
-    padding-left: 0.5rem;
-    font-family: 'Crimson Text', serif;
+    margin: 0;
 }
 
 .description {
-    font-size: 1rem;
-    color: #666;
-    line-height: 1.6;
-    margin-top: 0.3rem;
+    font-size: 0.95rem;
+    color: var(--color-text-light);
+    line-height: 1.4;
+    margin: 0.3rem 0 0 0;
     font-style: italic;
-    font-family: 'Crimson Text', serif;
 }
 
 /* Media Queries for Responsive Design */
@@ -400,48 +430,92 @@ footer {
     .menu-container-new {
         flex-direction: column;
     }
+    
     .menu-sidebar {
         width: 100%;
         height: auto;
         position: static;
-        padding: 60px 15px 20px;
+        padding: 1rem;
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
     }
+    
     .menu-categories {
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 5px 15px;
-        max-width: 100%;
+        max-width: none;
     }
+    
     .category-link {
-        padding: 8px 5px;
-        font-size: 13px;
-        width: auto;
-        margin: 0 5px;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
     }
+    
     .category-icon {
-        margin-right: 5px;
+        display: none;
     }
+    
     .menu-content {
-        width: 100%;
         margin-left: 0;
-        padding: 2rem;
+        padding: 2rem 1rem;
+    }
+
+    .menu-item {
+        padding: 0.8rem 0;
+        gap: 1rem;
+    }
+
+    .item-image-container {
+        width: 80px;
+        height: 80px;
+        flex: 0 0 80px;
+    }
+
+    .menu-item:hover {
+        transform: none;
     }
 }
 
 @media (max-width: 480px) {
     .menu-content {
-        padding: 1.5rem 1rem;
+        padding: 1rem;
     }
+    
     .category-link {
-        width: auto;
-        margin: 0 8px;
+        font-size: 0.8rem;
     }
+    
     .selected-category {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
     }
+    
     .decoration-line {
         width: 60px;
+    }
+
+    .item-image-container {
+        width: 70px;
+        height: 70px;
+        flex: 0 0 70px;
+    }
+    
+    .item-header h3 {
+        font-size: 1rem;
+    }
+    
+    .price {
+        font-size: 0.95rem;
+    }
+    
+    .description {
+        font-size: 0.9rem;
+    }
+
+    .category-heading {
+        font-size: 1.4rem;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
     }
 }
 
@@ -575,9 +649,9 @@ footer {
 }
 
 .subtitle {
-    color: #8b0000;
+    color: var(--color-primary);
     font-size: 1.2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0rem;
     font-weight: normal;
     text-transform: lowercase;
     position: relative;
@@ -713,13 +787,13 @@ footer {
 .reservation-btn {
     display: inline-block;
     padding: 1rem 2.5rem;
-    background: #8b0000;
-    color: white;
+    background: var(--color-primary);
+    color: var(--color-white);
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 2px;
     font-size: 0.9rem;
-    transition: all 0.3s ease;
+    transition: var(--transition-standard);
     margin-top: 1.5rem;
     border: none;
 }
@@ -737,7 +811,7 @@ h2, .about-text h2, .reservations-text h3 {
 }
 
 .subtitle {
-    color: #8b0000;
+    color: var(--color-primary);
     font-size: 1.2rem;
     margin-bottom: 0rem;
     font-weight: normal;
@@ -857,7 +931,7 @@ h2, .about-text h2, .reservations-text h3 {
 /* Add menu intro styles */
 .menu-intro {
     text-align: center;
-    color: #666;
+    color: var(--color-text-light);
     font-size: 1.1rem;
     margin-top: 1rem;
 }
@@ -873,34 +947,8 @@ h2, .about-text h2, .reservations-text h3 {
     color: #8b0000;
 }
 
-@media (max-width: 768px) {
-    .about-right, .reservations-left {
-        display: none;
-    }
-    .about-content, .reservations-content {
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        padding: 2rem;
-    }
-
-    .about-left, .reservations-right {
-        width: 100%;
-        padding: 2rem;
-        text-align: center;
-    }
-
-    .about-section, .reservations-section {
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-    }
-}
-
 .sidebar-title {
-    font-family: 'Crimson Text', serif;
-    color: #8b0000;
+    color: var(--color-primary);
     font-size: 24px;
     font-weight: normal;
     margin: 0 0 24px;
@@ -917,6 +965,6 @@ h2, .about-text h2, .reservations-text h3 {
     transform: translateX(-50%);
     width: 40px;
     height: 1px;
-    background-color: #8b0000;
+    background-color: var(--color-primary);
 }
 
