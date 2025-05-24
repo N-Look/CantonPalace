@@ -45,7 +45,4 @@ document.addEventListener('DOMContentLoaded', () => {
             icon.classList.remove('fa-times');
         });
     });
-
-    // Show initial section
-    document.querySelector('.menu-section').classList.add('show');
 }); 

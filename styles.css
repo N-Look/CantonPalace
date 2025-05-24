@@ -38,7 +38,7 @@ body {
 }
 
 .main-header.scrolled {
-    background: #E4DAD1;
+    background: #f9f5ea;
 }
 
 .address-bar {
@@ -306,7 +306,7 @@ footer {
 .category-heading {
     font-size: 1.8rem;
     color: var(--color-primary);
-    margin-top: 2.5rem;
+    margin-top: 0.5rem;
     margin-bottom: 1.5rem;
     padding-bottom: 0.8rem;
     font-weight: normal;

@@ -85,7 +85,7 @@ function displayMenuItems(items) {
             const imageContainer = document.createElement('div');
             imageContainer.className = 'item-image-container';
             const image = document.createElement('img');
-            image.src = item.image_url || '/images/foodpreview.jpg'; // Use default image if no specific image
+            image.src = item.image_url || '/images/foodpreview.png'; // Use default image if no specific image
             image.alt = item.name;
             image.className = 'item-image';
             imageContainer.appendChild(image);

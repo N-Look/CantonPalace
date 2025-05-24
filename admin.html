@@ -440,6 +440,49 @@
             font-weight: 600;
             margin-right: 10px;
         }
+
+        .image-preview {
+            margin-top: 10px;
+            max-width: 200px;
+            max-height: 200px;
+            overflow: hidden;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .item-preview-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .admin-table td.image-cell {
+            width: 80px;
+            text-align: center;
+        }
+
+        .remove-image-btn {
+            background-color: var(--danger-color);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-top: 8px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .remove-image-btn:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body>
@@ -484,6 +527,7 @@
             <table class="admin-table">
                 <thead>
                     <tr>
+                        <th width="80">Image</th>
                         <th>Name</th>
                         <th>Category</th>
                         <th>Quantity</th>
@@ -571,6 +615,14 @@
                         </div>
                     </div>
                     
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label for="itemImage">Item Image:</label>
+                            <input type="file" id="itemImage" accept="image/*">
+                            <div id="imagePreview" class="image-preview"></div>
+                        </div>
+                    </div>
+                    
                     <textarea id="itemDescription" placeholder="Description" rows="4"></textarea>
                 </form>
             </div>
@@ -621,6 +673,7 @@
         let currentEditItemId = null;
         let allMenuItems = []; // Store all menu items for search functionality
         let uniqueCategories = new Set(); // Store unique categories for filter
+        let currentImageFile = null;
 
         // --- AUTHENTICATION LOGIC ---
         
@@ -818,33 +871,62 @@
         }
 
         function displayMenuItems(items) {
-            menuItemsTableBody.innerHTML = ''; // Clear loading/previous items
+            menuItemsTableBody.innerHTML = '';
             
-            // Sort items by category
             const sortedItems = [...items].sort((a, b) => {
                 if (a.category !== b.category) {
                     return (a.category || '').localeCompare(b.category || '');
                 }
-                // Within the same category, sort by name
                 return a.name.localeCompare(b.name);
             });
             
-            // Group items by category for visual separation
             let currentCategory = null;
             
             sortedItems.forEach(item => {
-                // If we have a new category, add a visual separator
                 if (item.category !== currentCategory) {
                     currentCategory = item.category;
                 }
                 
                 const tableRow = document.createElement('tr');
                 
-                // Name cell
+                // Image cell with remove button
+                const imageCell = document.createElement('td');
+                imageCell.className = 'image-cell';
+                if (item.image_url) {
+                    const imageContainer = document.createElement('div');
+                    imageContainer.style.position = 'relative';
+                    
+                    const image = document.createElement('img');
+                    image.className = 'item-preview-image';
+                    image.src = item.image_url;
+                    image.alt = item.name;
+                    
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'remove-image-btn';
+                    removeBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                    removeBtn.title = 'Remove Image';
+                    removeBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        if (confirm('Are you sure you want to remove this image?')) {
+                            removeImage(item.id, item.image_url);
+                        }
+                    };
+                    
+                    imageContainer.appendChild(image);
+                    imageContainer.appendChild(removeBtn);
+                    imageCell.appendChild(imageContainer);
+                } else {
+                    const image = document.createElement('img');
+                    image.className = 'item-preview-image';
+                    image.src = '/images/foodpreview.jpg';
+                    image.alt = 'No image';
+                    imageCell.appendChild(image);
+                }
+                
+                // Rest of the cells
                 const nameCell = document.createElement('td');
                 nameCell.textContent = item.name;
                 
-                // Category cell
                 const categoryCell = document.createElement('td');
                 if (item.category) {
                     const categoryBadge = document.createElement('span');
@@ -855,15 +937,12 @@
                     categoryCell.textContent = 'N/A';
                 }
                 
-                // Quantity cell
                 const quantityCell = document.createElement('td');
                 quantityCell.textContent = item.quantity || 'N/A';
                 
-                // Price cell
                 const priceCell = document.createElement('td');
                 priceCell.textContent = item.price || 'N/A';
                 
-                // Actions cell
                 const actionsCell = document.createElement('td');
                 actionsCell.className = 'admin-actions';
                 
@@ -889,7 +968,7 @@
                 actionsCell.appendChild(viewButton);
                 actionsCell.appendChild(moreButton);
                 
-                // Add all cells to the row
+                tableRow.appendChild(imageCell);
                 tableRow.appendChild(nameCell);
                 tableRow.appendChild(categoryCell);
                 tableRow.appendChild(quantityCell);
@@ -913,10 +992,53 @@
             editItem(itemId);
         }
 
-        // Form submission handler - Add or Update items
+        // Image preview handler
+        document.getElementById('itemImage').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                currentImageFile = file;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.style.display = 'block';
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Function to upload image to Supabase Storage
+        async function uploadImage(file) {
+            if (!file) return null;
+            
+            try {
+                const fileExt = file.name.split('.').pop();
+                const fileName = `${Date.now()}.${fileExt}`;
+                const filePath = `food-images/${fileName}`;
+                
+                const { data, error } = await _supabase.storage
+                    .from('menu-images')
+                    .upload(filePath, file);
+                    
+                if (error) throw error;
+                
+                // Get the public URL for the uploaded image
+                const { data: { publicUrl } } = _supabase.storage
+                    .from('menu-images')
+                    .getPublicUrl(filePath);
+                    
+                return publicUrl;
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                showStatusMessage('Error uploading image: ' + error.message, 'error');
+                return null;
+            }
+        }
+
+        // Modify the form submission handler to include image upload
         submitButton.addEventListener('click', async () => {
             if (!addMenuItemForm.reportValidity()) {
-                return; // Let browser handle required field validation
+                return;
             }
             
             statusMessage.style.display = 'none';
@@ -935,6 +1057,15 @@
             // Format price as "$XX.YY" for Supabase varchar column
             const formattedPrice = `$${priceValue.toFixed(2)}`;
 
+            // Handle image upload first if there's a new image
+            let imageUrl = null;
+            if (currentImageFile) {
+                imageUrl = await uploadImage(currentImageFile);
+                if (!imageUrl && !confirm('Failed to upload image. Continue without image?')) {
+                    return;
+                }
+            }
+
             const itemData = {
                 name: name,
                 description: description,
@@ -943,8 +1074,13 @@
                 category: category
             };
 
+            // Only add image_url if we have a new image
+            if (imageUrl) {
+                itemData.image_url = imageUrl;
+            }
+
             if (currentEditItemId) {
-                // ---- UPDATE item ----
+                // Update item
                 const { data, error } = await _supabase
                     .from('menu_items')
                     .update(itemData)
@@ -958,11 +1094,11 @@
                     console.log('Item updated:', data);
                     addItemModal.style.display = 'none';
                     resetForm();
-                    loadMenuItems(); // Refresh the list
+                    loadMenuItems();
                     showStatusMessage('Item updated successfully!', 'success');
                 }
             } else {
-                // ---- ADD new item ----
+                // Add new item
                 const { data, error } = await _supabase
                     .from('menu_items')
                     .insert([itemData])
@@ -975,41 +1111,23 @@
                     console.log('Item added:', data);
                     addItemModal.style.display = 'none';
                     resetForm();
-                    loadMenuItems(); // Refresh the list
+                    loadMenuItems();
                     showStatusMessage('Item added successfully!', 'success');
                 }
             }
         });
 
+        // Modify the resetForm function to clear image preview
         function resetForm() {
             addMenuItemForm.reset();
             currentEditItemId = null;
+            currentImageFile = null;
+            document.getElementById('imagePreview').style.display = 'none';
             document.querySelector('.modal-title').textContent = 'Add New Menu Item';
             submitButton.textContent = 'Add Item';
         }
 
-        // Delete menu item
-        function deleteItem(itemId, itemName) {
-            statusMessage.style.display = 'none';
-
-            // Delete from Supabase
-            _supabase
-                .from('menu_items')
-                .delete()
-                .match({ id: itemId })
-                .then(({ error }) => {
-                    if (error) {
-                        console.error('Error deleting item:', error);
-                        showStatusMessage('Error deleting item: ' + error.message, 'error');
-                    } else {
-                        console.log('Item deleted:', itemId);
-                        loadMenuItems(); // Refresh the list
-                        showStatusMessage('Item deleted successfully!', 'success');
-                    }
-                });
-        }
-
-        // Edit menu item
+        // Modify the editItem function to show existing image
         async function editItem(itemId) {
             statusMessage.style.display = 'none';
             try {
@@ -1029,8 +1147,21 @@
                     itemDescriptionInput.value = item.description || '';
                     itemQuantityInput.value = item.quantity || '';
                     itemCategoryInput.value = item.category || '';
-                    // Assuming price is stored like "$12.99", remove '$' for the number input
                     itemPriceInput.value = item.price ? parseFloat(item.price.replace('$', '')) : '';
+                    
+                    // Show existing image if available
+                    const preview = document.getElementById('imagePreview');
+                    if (item.image_url) {
+                        preview.style.display = 'block';
+                        preview.innerHTML = `
+                            <img src="${item.image_url}" alt="${item.name}">
+                            <button type="button" class="remove-image-btn" onclick="removeImage(${item.id}, '${item.image_url}')">
+                                <i class="fas fa-trash"></i> Remove Image
+                            </button>
+                        `;
+                    } else {
+                        preview.style.display = 'none';
+                    }
                     
                     // Update form state and show modal
                     currentEditItemId = item.id;
@@ -1098,6 +1229,45 @@
             // Check user session on page load
             checkUserSession();
         });
+
+        // Add the removeImage function
+        async function removeImage(itemId, imageUrl) {
+            try {
+                // Extract the file path from the URL
+                const urlParts = imageUrl.split('/');
+                const filePath = 'food-images/' + urlParts[urlParts.length - 1];
+                
+                // Delete the file from storage
+                const { error: storageError } = await _supabase.storage
+                    .from('menu-images')
+                    .remove([filePath]);
+
+                if (storageError) {
+                    throw storageError;
+                }
+
+                // Update the menu item to remove the image_url
+                const { error: updateError } = await _supabase
+                    .from('menu_items')
+                    .update({ image_url: null })
+                    .eq('id', itemId);
+
+                if (updateError) {
+                    throw updateError;
+                }
+
+                // Update the UI
+                document.getElementById('imagePreview').style.display = 'none';
+                showStatusMessage('Image removed successfully!', 'success');
+                
+                // Refresh the menu items display
+                loadMenuItems();
+                
+            } catch (error) {
+                console.error('Error removing image:', error);
+                showStatusMessage('Error removing image: ' + error.message, 'error');
+            }
+        }
     </script>
 </body>
 </html> 
