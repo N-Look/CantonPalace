@@ -1,0 +1,253 @@
+/* Enhanced Animation Keyframes */
+@keyframes heroEntrance {
+    from {
+      opacity: 0;
+      transform: translateY(50px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  @keyframes reservationEntrance {
+    from {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes reservationEntranceDelay {
+    from {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  /* Hero Animation Classes */
+  .hero-entrance {
+    animation: heroEntrance 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    opacity: 0;
+  }
+  
+  .hero-entrance-delay {
+    animation: heroEntrance 1s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+    opacity: 0;
+  }
+  
+  .hero-entrance-delay-2 {
+    animation: heroEntrance 1s cubic-bezier(0.4, 0, 0.2, 1) 0.6s forwards;
+    opacity: 0;
+  }
+  
+  .hero-entrance-delay-3 {
+    animation: heroEntrance 1s cubic-bezier(0.4, 0, 0.2, 1) 0.9s forwards;
+    opacity: 0;
+  }
+  
+  .hero-entrance-delay-4 {
+    animation: heroEntrance 1s cubic-bezier(0.4, 0, 0.2, 1) 1.2s forwards;
+    opacity: 0;
+  }
+  
+  /* Reservation Animation Classes */
+  .reservation-entrance {
+    animation: reservationEntrance 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    opacity: 0;
+  }
+  
+  .reservation-entrance-delay {
+    animation: reservationEntranceDelay 1s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+    opacity: 0;
+  }
+  
+  /* Scroll Animation Classes */
+  .fade-in-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .fade-in-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Staggered animations for cards */
+  .about-grid .info-card:nth-child(1) {
+    animation: slideInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+  }
+  
+  .about-grid .info-card:nth-child(2) {
+    animation: slideInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both;
+  }
+  
+  /* Enhanced Hover Animations */
+  .info-card {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .info-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(220, 20, 60, 0.15);
+  }
+  
+  .cta-button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .cta-button:hover {
+    transform: translateY(-4px) scale(1.05);
+  }
+  
+  .phone-number:hover {
+    transform: translateY(-3px) scale(1.02);
+  }
+  
+  .location-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+  }
+  
+  .phone-highlight:hover {
+    transform: translateY(-3px) scale(1.05);
+  }
+  
+  /* Logo Animation */
+  .hero-logo-img {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .hero-logo:hover .hero-logo-img {
+    transform: scale(1.08) rotate(2deg);
+    filter: drop-shadow(0 12px 35px rgba(220, 20, 60, 0.3));
+  }
+  
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Performance optimizations */
+  .hero-entrance,
+  .hero-entrance-delay,
+  .hero-entrance-delay-2,
+  .hero-entrance-delay-3,
+  .hero-entrance-delay-4,
+  .reservation-entrance,
+  .reservation-entrance-delay,
+  .fade-in-scroll {
+    will-change: transform, opacity;
+  }
+  
+  /* Navbar scroll effect */
+  .navbar.scrolled {
+    background: rgba(245, 241, 232, 0.98);
+    box-shadow: 0 4px 25px rgba(220, 20, 60, 0.1);
+  }
+  
+  /* Button shimmer effect */
+  @keyframes shimmer {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+  
+  .cta-button::before {
+    animation: shimmer 2s infinite;
+  }
+  
+  /* Footer entrance animation */
+  .footer {
+    animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  
+  /* Reduced motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-entrance,
+    .hero-entrance-delay,
+    .hero-entrance-delay-2,
+    .hero-entrance-delay-3,
+    .hero-entrance-delay-4,
+    .reservation-entrance,
+    .reservation-entrance-delay {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  
+    .fade-in-scroll {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  
+    .info-card:hover,
+    .cta-button:hover,
+    .phone-number:hover {
+      transform: none;
+    }
+  
+    .chinese-pattern {
+      animation: none;
+    }
+  
+    html {
+      scroll-behavior: auto;
+    }
+  }
+  
