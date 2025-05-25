@@ -27,7 +27,7 @@
   }
   
   body {
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Crimson Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     background: linear-gradient(135deg, var(--soft-parchment) 0%, var(--warm-cream) 100%);
     color: var(--text-dark);
     line-height: 1.6;
@@ -46,42 +46,46 @@
     font-weight: 600;
     letter-spacing: 0.5px;
   }
-  
-  .restaurant-name,
-  .section-title {
-    font-family: "Playfair Display", serif;
-  }
+
   
   /* Navigation */
   .navbar {
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
-    background: rgba(245, 241, 232, 0.95);
-    backdrop-filter: blur(15px);
-    border-bottom: 1px solid rgba(196, 30, 58, 0.1);
+    background: var(--white);
+    border-bottom: 1px solid var(--soft-parchment);
     z-index: 1000;
+    box-shadow: none;
     transition: var(--transition);
+    backdrop-filter: none;
   }
   
   .nav-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 80px;
+    height: 70px;
+  }
+  
+  .nav-logo {
+    display: flex;
+    align-items: center;
   }
   
   .nav-logo .logo-img {
-    height: 60px;
+    height: 48px;
     width: auto;
   }
   
   .nav-menu {
     display: flex;
-    gap: 3rem;
+    gap: 2.5rem;
+    align-items: center;
   }
   
   .nav-link {
@@ -89,29 +93,32 @@
     color: var(--text-dark);
     font-weight: 500;
     font-size: 0.95rem;
-    letter-spacing: 1px;
-    transition: var(--transition);
-    position: relative;
+    letter-spacing: 2px;
     text-transform: uppercase;
-  }
-  
-  .nav-link:hover {
-    color: var(--accent-crimson);
+    position: relative;
+    padding: 8px 0;
+    transition: color 0.3s ease;
   }
   
   .nav-link::after {
     content: "";
     position: absolute;
-    bottom: -5px;
-    left: 0;
+    left: 50%;
+    bottom: -2px;
     width: 0;
     height: 2px;
-    background: var(--accent-crimson);
-    transition: var(--transition);
+    background: var(--primary-red);
+    transition: width 0.3s ease, left 0.3s ease;
+    transform: translateX(-50%);
   }
   
   .nav-link:hover::after {
-    width: 100%;
+    width: 80px;
+    left: 50%;
+  }
+  
+  .nav-link:hover {
+    color: var(--primary-red);
   }
   
   /* Hero Section */
@@ -419,7 +426,7 @@
   }
   
   .hours-category {
-    background: var(--cream-light);
+    background: var(--white);
     padding: 2rem;
     border-radius: 10px;
     border-left: 5px solid var(--accent-crimson);
@@ -483,7 +490,7 @@
   }
   
   .location-btn {
-    background: linear-gradient(90deg, var(--accent-crimson));
+    background: var(--accent-crimson);
     color: white;
     border: none;
     padding: 14px 28px;
@@ -497,7 +504,7 @@
   }
   
   .location-btn:hover {
-    background: linear-gradient(to right, #aa0d2f); /* brighter red tones */
+    background: #aa0d2f; /* brighter red tones */
     transform: scale(1.03);
     transition: all 0.3s ease-in-out;
   }
@@ -515,15 +522,17 @@
   
   .phone-grid .phone-number {
     color: var(--accent-crimson);
-    font-weight: 600;
+    font-weight: 550;
     font-size: 1rem;
     text-decoration: none;
-    padding: 0.8rem;
-    background: rgba(224, 67, 98, 0.048);
+    transition: var(--transition);
+    padding: 0.8rem 1.5rem;
+    background: rgba(224, 67, 99, 0.048);
     border-radius: var(--border-radius);
     text-align: center;
-    transition: var(--transition);
     border: 2px solid var(--accent-crimson);
+    font-family: "Inter", sans-serif;
+    letter-spacing: 1px;
   }
   
   .phone-grid .phone-number:hover {
@@ -536,7 +545,7 @@
   /* Reservation Section */
   .reservation-section {
     padding: 120px 0;
-    background: var(--soft-parchment);
+    background: var(--warm-cream);
     position: relative;
   }
   
@@ -590,8 +599,8 @@
   
   .phone-highlight {
     color: var(--accent-crimson);
-    font-weight: 700;
-    font-size: 1.2rem;
+    font-weight: 550;
+    font-size: 1rem;
     text-decoration: none;
     transition: var(--transition);
     padding: 0.8rem 1.5rem;
@@ -599,6 +608,8 @@
     border-radius: var(--border-radius);
     text-align: center;
     border: 2px solid var(--accent-crimson);
+    font-family: "Inter", sans-serif;
+    letter-spacing: 1px;
   }
   
   .phone-highlight:hover {
@@ -607,7 +618,10 @@
     transform: translateY(-3px);
     box-shadow: var(--shadow-medium);
   }
-  
+  .reservation-description {
+    margin-left: 5%;
+    margin-right: 5%;
+  }
   /* Restaurant Image */
   .restaurant-image {
     position: relative;
@@ -654,7 +668,7 @@
   
   /* Footer */
   .footer {
-    background: var(--warm-cream);
+    background: var(--white);
     border-top: 3px solid var(--accent-crimson);
     padding: 40px 0 20px;
     margin-top: 0;
@@ -774,85 +788,220 @@
   
   /* Mobile Responsiveness */
   @media (max-width: 768px) {
+    .nav-container {
+      padding: 0 15px;
+      height: 60px;
+    }
+    .nav-logo .logo-img {
+      height: 40px;
+    }
     .nav-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--white);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0;
+      display: flex;
+      z-index: 1500;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    .nav-menu.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      animation: slideDownMenu 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    @keyframes slideDownMenu {
+      0% {
+        opacity: 0;
+        transform: translateY(-40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .nav-menu .nav-link {
+      color: var(--accent-crimson);
+      font-size: 1.3rem;
+      font-family: 'Crimson Text', serif;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      width: 100vw;
+      text-align: center;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 18px 0 10px 0;
+      margin: 0;
+      opacity: 1;
+      transition: all 0.3s;
+      position: relative;
+      display: block;
+    }
+    .nav-menu .nav-link::after {
+      content: "";
+      display: block;
+      margin: 12px auto 0 auto;
+      width: 70%;
+      height: 1px;
+      background: var(--accent-crimson);
+      opacity: 0.25;
+      border-radius: 1px;
+      transition: width 0.3s, background 0.3s;
+    }
+    .nav-menu .nav-link:last-child::after {
       display: none;
     }
-  
+    .nav-menu .nav-link:hover,
+    .nav-menu .nav-link:focus {
+      color: var(--accent-crimson);
+      background: transparent;
+    }
+    .nav-menu .nav-link:hover::after,
+    .nav-menu .nav-link:focus::after {
+      width: 90%;
+      background: var(--primary-red);
+      opacity: 0.5;
+    }
     .hero-logo-img {
       height: 150px;
     }
-  
     .hero-buttons {
       flex-direction: column;
       align-items: center;
     }
-  
     .cta-button {
       width: 100%;
       max-width: 280px;
     }
-  
     .about-grid {
       grid-template-columns: 1fr;
       gap: 2rem;
     }
-  
     .combined-card {
       gap: 2rem;
     }
-  
     .reservation-content {
       grid-template-columns: 1fr;
       gap: 3rem;
     }
-  
     .reservation-text {
       padding-left: 0;
     }
-  
     .reservation-text .section-title {
       text-align: center;
     }
-  
     .reservation-text .title-underline {
       margin: 0 auto 2rem;
     }
-  
     .info-card {
       padding: 2rem 1.5rem;
     }
-  
     .hours-section {
       gap: 1rem;
     }
-  
     .hours-category {
       padding: 1.5rem;
     }
-  
     .phone-grid {
       grid-template-columns: 1fr;
       gap: 0.8rem;
     }
-  
+    .phone-grid .phone-number {
+      display: block;
+      width: 100%;
+      max-width: 280px;
+      margin: 0 auto;
+      padding: 0.8rem 1.5rem;
+    }
     .phone-numbers {
       flex-direction: column;
       align-items: center;
       gap: 0.8rem;
     }
-  
     .restaurant-image {
       height: 300px;
     }
-  
     .footer-content {
       grid-template-columns: 1fr;
       gap: 2rem;
       text-align: center;
     }
-  
     .footer-logo {
       align-items: center;
+    }
+    .hamburger-menu {
+      color: var(--accent-crimson);
+      z-index: 2000;
+      display: block;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      transition: transform 0.3s ease;
+    }
+    .hamburger-menu i {
+      color: var(--accent-crimson);
+      font-size: 24px;
+      transition: transform 0.3s ease;
+    }
+    .hamburger-menu.active i {
+      color: var(--accent-crimson);
+      transform: rotate(180deg);
+    }
+    .nav-menu .mobile-menu-logo {
+      display: none;
+      width: 160px;
+      height: auto;
+      margin: 0 auto 0.5rem auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      padding: 5px;
+    }
+    .nav-menu.active .mobile-menu-logo {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+  }
+  
+  @media (min-width: 769px) {
+    .hamburger-menu {
+      display: none !important;
+    }
+    .nav-menu .mobile-menu-logo {
+      display: none !important;
+    }
+    .phone-numbers {
+      display: flex;
+      flex-direction: row;
+      gap: 1.5rem;
+      justify-content: center;
+      align-items: center;
+    }
+    .phone-numbers .phone-highlight {
+      min-width: 200px;
+      text-align: center;
+      padding: 1.1rem 1.5rem;
+      font-size: 1rem;
+      border-radius: var(--border-radius);
+      box-sizing: border-box;
     }
   }
   
@@ -860,64 +1009,61 @@
     .nav-container {
       padding: 0 15px;
     }
-  
     .container {
       padding: 0 15px;
     }
-  
     .hero-container {
       padding: 0 15px;
     }
-  
     .nav-logo .logo-img {
       height: 50px;
     }
-  
     .hero-logo-img {
       height: 120px;
     }
-  
     .restaurant-name {
       font-size: 2.5rem;
       letter-spacing: 2px;
     }
-  
     .restaurant-subtitle {
       font-size: 1.5rem;
     }
-  
     .section-title {
       font-size: 2rem;
       letter-spacing: 2px;
     }
-  
     .info-card {
       padding: 1.5rem 1rem;
     }
-  
     .hours-category h4 {
       font-size: 1.1rem;
     }
-  
     .hour-item {
       font-size: 0.9rem;
     }
-  
     .phone-grid .phone-number {
-      font-size: 0.9rem;
-      padding: 0.6rem;
+      font-size: 1rem;
+      padding: 0.8rem 1.5rem;
     }
-  
     .restaurant-image {
       height: 250px;
     }
-  
     .footer {
       padding: 40px 0 20px;
     }
-  
     .footer-content {
       gap: 1.5rem;
     }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Remove scrolled effect if present */
+  .navbar.scrolled {
+    background: var(--white) !important;
+    box-shadow: none !important;
   }
   

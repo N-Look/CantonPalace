@@ -77,19 +77,9 @@ const observerOptions = {
   
     if (locationBtn) {
       locationBtn.addEventListener("click", () => {
-        window.open("https://maps.google.com/?q=Cross+Crossing+Shopping+Complex+San+Fernando", "_blank")
+        window.open("https://maps.app.goo.gl/DtppUdCXDg88UQfJA", "_blank")
       })
     }
-  
-    // Phone number click handlers
-    const phoneNumbers = document.querySelectorAll(".phone-number, .phone-highlight, .footer-phone")
-    phoneNumbers.forEach((phone) => {
-      phone.addEventListener("click", (e) => {
-        e.preventDefault()
-        const phoneNumber = phone.textContent.replace(/\D/g, "")
-        window.location.href = `tel:+1${phoneNumber}`
-      })
-    })
   
     // Enhanced button hover effects
     const buttons = document.querySelectorAll(".cta-button, .location-btn, .phone-highlight")
@@ -159,4 +149,45 @@ const observerOptions = {
   if (footer) {
     enhancedObserver.observe(footer)
   }
+  
+  // Hamburger menu logic for mobile nav (matches menu page behavior)
+  document.addEventListener('DOMContentLoaded', () => {
+    const hamburgerBtn = document.querySelector('.hamburger-menu');
+    const navMenu = document.querySelector('.nav-menu');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    if (hamburgerBtn && navMenu) {
+      hamburgerBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        hamburgerBtn.classList.toggle('active');
+        navMenu.classList.toggle('active');
+        // Toggle menu icon
+        const icon = hamburgerBtn.querySelector('i');
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!navMenu.contains(e.target) && !hamburgerBtn.contains(e.target) && navMenu.classList.contains('active')) {
+          navMenu.classList.remove('active');
+          hamburgerBtn.classList.remove('active');
+          const icon = hamburgerBtn.querySelector('i');
+          icon.classList.add('fa-bars');
+          icon.classList.remove('fa-times');
+        }
+      });
+
+      // Close menu when clicking a link
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          navMenu.classList.remove('active');
+          hamburgerBtn.classList.remove('active');
+          const icon = hamburgerBtn.querySelector('i');
+          icon.classList.add('fa-bars');
+          icon.classList.remove('fa-times');
+        });
+      });
+    }
+  });
   
