@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu | Canton Palace Trinidad</title>
+    <title>Menu - Canton Palace Trinidad</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="menuStyles.css">
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,44 +12,51 @@
     <!-- Main Header -->
     <header class="main-header scrolled">
         <nav>
-            <div class="nav-links fade-in">
-                <a href="index.html">HOME</a>
-                <a href="menu.html" class="active">MENU</a>
-                <a href="#about">ABOUT</a>
-                <a href="#contact">CONTACT</a>
+            <button class="hamburger-menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-container">
+                <div class="nav-links fade-in">
+                    <img src="/images/logoresized.png" alt="Canton Palace Logo" class="nav-logo">
+                    <a href="index.html">HOME</a>
+                    <a href="menu.html" class="active">MENU</a>
+                    <a href="#about">ABOUT</a>
+                    <a href="#contact">CONTACT</a>
+                </div>
             </div>
         </nav>
     </header>
 
-    <div class="menu-container-new">
+    <!-- Desktop Menu -->
+    <div class="menu-container-new desktop-menu">
         <div class="menu-sidebar">
             <div class="sidebar-decoration">
                 <i class="fas fa-utensils"></i>
             </div>
             <h3 class="sidebar-title">Our Menu</h3>
             <div class="menu-categories">
-                <a class="category-link" id="appetizers-btn">
+                <a class="category-link" id="appetizers-btn-desktop">
                     Appetizers & Soups
                 </a>
-                <a class="category-link" id="poultry-btn">
+                <a class="category-link" id="poultry-btn-desktop">
                     Poultry
                 </a>
-                <a class="category-link" id="seafood-btn">
+                <a class="category-link" id="seafood-btn-desktop">
                     Seafood
                 </a>
-                <a class="category-link" id="beef-btn">
+                <a class="category-link" id="beef-btn-desktop">
                     Beef
                 </a>
-                <a class="category-link" id="pork-btn">
+                <a class="category-link" id="pork-btn-desktop">
                     Pork
                 </a>
-                <a class="category-link" id="noodlesrice-btn">
+                <a class="category-link" id="noodlesrice-btn-desktop">
                     Noodles & Rice
                 </a>
-                <a class="category-link" id="vegetables-btn">
+                <a class="category-link" id="vegetables-btn-desktop">
                     Vegetables
                 </a>
-                <a class="category-link" id="combinations-btn">
+                <a class="category-link" id="combinations-btn-desktop">
                     Combinations
                 </a>
             </div>
@@ -71,10 +78,77 @@
             </div>
             
             <p class="menu-intro">Select a category to view our dishes.</p>
-            <div class="menu-items">
-                <!-- Menu items will be populated here by JavaScript -->
-            </div>
+            <div class="menu-items"></div>
         </main>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="menu-container-new mobile-menu">
+        <div class="mobile-hero">
+            <h1>Our Menu</h1>
+            <div class="hero-decoration">
+                <span class="decoration-line"></span>
+                <i class="fas fa-dragon"></i>
+                <span class="decoration-line"></span>
+            </div>
+        </div>
+        <div class="mobile-menu-categories">
+            <div class="category-wrapper" data-category="appetizers">
+                <a class="category-link" id="appetizers-btn-mobile">
+                    Appetizers & Soups
+                </a>
+                <div class="menu-items" id="appetizers-items"></div>
+            </div>
+            
+            <div class="category-wrapper" data-category="poultry">
+                <a class="category-link" id="poultry-btn-mobile">
+                    Poultry
+                </a>
+                <div class="menu-items" id="poultry-items"></div>
+            </div>
+            
+            <div class="category-wrapper" data-category="seafood">
+                <a class="category-link" id="seafood-btn-mobile">
+                    Seafood
+                </a>
+                <div class="menu-items" id="seafood-items"></div>
+            </div>
+            
+            <div class="category-wrapper" data-category="beef">
+                <a class="category-link" id="beef-btn-mobile">
+                    Beef
+                </a>
+                <div class="menu-items" id="beef-items"></div>
+            </div>
+            
+            <div class="category-wrapper" data-category="pork">
+                <a class="category-link" id="pork-btn-mobile">
+                    Pork
+                </a>
+                <div class="menu-items" id="pork-items"></div>
+            </div>
+            
+            <div class="category-wrapper" data-category="noodlesrice">
+                <a class="category-link" id="noodlesrice-btn-mobile">
+                    Noodles & Rice
+                </a>
+                <div class="menu-items" id="noodlesrice-items"></div>
+            </div>
+            
+            <div class="category-wrapper" data-category="vegetables">
+                <a class="category-link" id="vegetables-btn-mobile">
+                    Vegetables
+                </a>
+                <div class="menu-items" id="vegetables-items"></div>
+            </div>
+            
+            <div class="category-wrapper" data-category="combinations">
+                <a class="category-link" id="combinations-btn-mobile">
+                    Combinations
+                </a>
+                <div class="menu-items" id="combinations-items"></div>
+            </div>
+        </div>
     </div>
 
     <footer>

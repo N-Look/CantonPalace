@@ -25,22 +25,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Mobile menu functionality
-    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const hamburgerBtn = document.querySelector('.hamburger-menu');
+    const navContainer = document.querySelector('.nav-container');
     const navLinks = document.querySelector('.nav-links');
 
-    mobileMenuBtn.addEventListener('click', () => {
-        navLinks.classList.toggle('show');
+    hamburgerBtn.addEventListener('click', () => {
+        hamburgerBtn.classList.toggle('active');
+        navContainer.classList.toggle('active');
         // Toggle menu icon
-        const icon = mobileMenuBtn.querySelector('i');
+        const icon = hamburgerBtn.querySelector('i');
         icon.classList.toggle('fa-bars');
         icon.classList.toggle('fa-times');
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!navContainer.contains(e.target) && !hamburgerBtn.contains(e.target) && navContainer.classList.contains('active')) {
+            navContainer.classList.remove('active');
+            hamburgerBtn.classList.remove('active');
+            const icon = hamburgerBtn.querySelector('i');
+            icon.classList.add('fa-bars');
+            icon.classList.remove('fa-times');
+        }
     });
 
     // Close menu when clicking a link
     navLinks.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
-            navLinks.classList.remove('show');
-            const icon = mobileMenuBtn.querySelector('i');
+            navContainer.classList.remove('active');
+            hamburgerBtn.classList.remove('active');
+            const icon = hamburgerBtn.querySelector('i');
             icon.classList.add('fa-bars');
             icon.classList.remove('fa-times');
         });
