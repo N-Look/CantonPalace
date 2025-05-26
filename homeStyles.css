@@ -837,6 +837,9 @@ h6 {
     pointer-events: auto;
     animation: slideDownMenu 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
+  .nav-menu.closing {
+    animation: slideUpMenu 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
   @keyframes slideDownMenu {
     0% {
       opacity: 0;
@@ -845,6 +848,16 @@ h6 {
     100% {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+  @keyframes slideUpMenu {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-40px);
     }
   }
   .nav-menu .nav-link {
@@ -1081,10 +1094,4 @@ h6 {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* Remove scrolled effect if present */
-.navbar.scrolled {
-  background: var(--white) !important;
-  box-shadow: none !important;
 }

@@ -45,7 +45,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  background: var(--soft-parchment);
+  background: var(--color-background);
   z-index: 1000;
   box-shadow: none;
   transition: var(--transition);
@@ -539,6 +539,9 @@ footer {
     pointer-events: auto;
     animation: slideDownMenu 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
+  .nav-menu.closing {
+    animation: slideUpMenu 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
   @keyframes slideDownMenu {
     0% {
       opacity: 0;
@@ -547,6 +550,16 @@ footer {
     100% {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+  @keyframes slideUpMenu {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-40px);
     }
   }
 
@@ -699,7 +712,7 @@ footer {
   margin: 0;
   background: #8b000015;
   color: var(--color-primary);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   font-weight: 600;
@@ -707,16 +720,6 @@ footer {
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--color-border);
-}
-
-.mobile-menu .category-heading:before {
-  content: "";
-  width: 4px;
-  height: 100%;
-  background: var(--color-primary);
-  position: absolute;
-  left: 0;
-  top: 0;
 }
 
 .mobile-menu .menu-items {

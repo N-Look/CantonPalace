@@ -150,42 +150,62 @@ const observerOptions = {
     enhancedObserver.observe(footer)
   }
   
-  // Hamburger menu logic for mobile nav (matches menu page behavior)
   document.addEventListener('DOMContentLoaded', () => {
+    // Mobile menu functionality
     const hamburgerBtn = document.querySelector('.hamburger-menu');
     const navMenu = document.querySelector('.nav-menu');
-    const navLinks = document.querySelectorAll('.nav-link');
 
     if (hamburgerBtn && navMenu) {
-      hamburgerBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
+      hamburgerBtn.addEventListener('click', () => {
         hamburgerBtn.classList.toggle('active');
-        navMenu.classList.toggle('active');
+        if (navMenu.classList.contains('active')) {
+            navMenu.classList.add('closing');
+            setTimeout(() => {
+                navMenu.classList.remove('active', 'closing');
+            }, 400);
+        } else {
+            navMenu.classList.add('active');
+        }
+        
         // Toggle menu icon
         const icon = hamburgerBtn.querySelector('i');
-        icon.classList.toggle('fa-bars');
-        icon.classList.toggle('fa-times');
-      });
+        if (icon) { 
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        }
+    }); 
 
       // Close menu when clicking outside
       document.addEventListener('click', (e) => {
-        if (!navMenu.contains(e.target) && !hamburgerBtn.contains(e.target) && navMenu.classList.contains('active')) {
-          navMenu.classList.remove('active');
-          hamburgerBtn.classList.remove('active');
-          const icon = hamburgerBtn.querySelector('i');
-          icon.classList.add('fa-bars');
-          icon.classList.remove('fa-times');
+        if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+          navMenu.classList.add('closing');
+          setTimeout(() => {
+            navMenu.classList.remove('active','closing');
+            hamburgerBtn.classList.remove('active');
+            const icon = hamburgerBtn.querySelector('i');
+            if (icon) { 
+              icon.classList.add('fa-bars');
+              icon.classList.remove('fa-times');
+            }
+          }, 400);
         }
       });
 
       // Close menu when clicking a link
-      navLinks.forEach(link => {
+      navMenu.forEach(link => {
         link.addEventListener('click', () => {
-          navMenu.classList.remove('active');
-          hamburgerBtn.classList.remove('active');
-          const icon = hamburgerBtn.querySelector('i');
-          icon.classList.add('fa-bars');
-          icon.classList.remove('fa-times');
+          if (navMenu.classList.contains('active')) {
+            navMenu.classList.add('closing');
+            setTimeout(() => {
+                navMenu.classList.remove('active', 'closing');
+                hamburgerBtn.classList.remove('active');
+                const icon = hamburgerBtn.querySelector('i');
+                if (icon) {
+                    icon.classList.add('fa-bars');
+                    icon.classList.remove('fa-times');
+                }
+            }, 400);
+          }
         });
       });
     }
