@@ -108,10 +108,12 @@ function displayMobileMenuItems(items, categoryId) {
                     allImages.forEach(img => {
                         if (img !== imageContainer) {
                             img.classList.remove('active');
+                            img.closest('.menu-item')?.classList.remove('expanded');
                         }
                     });
                     
                     imageContainer.classList.toggle('active');
+                    menuItem.classList.toggle('expanded');
                 });
             }
 
