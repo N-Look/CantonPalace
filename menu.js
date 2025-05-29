@@ -178,14 +178,17 @@ function displayGroupedItems(groupedItems, container) {
             const menuItem = document.createElement('div');
             menuItem.className = 'menu-item';
 
-            const imageContainer = document.createElement('div');
-            imageContainer.className = 'item-image-container';
-            const image = document.createElement('img');
-            image.src = item.image_url || '/images/foodpreview.png';
-            image.alt = item.name;
-            image.className = 'item-image';
-            imageContainer.appendChild(image);
-            menuItem.appendChild(imageContainer);
+            // Only create image container if there's an image URL
+            if (item.image_url) {
+                const imageContainer = document.createElement('div');
+                imageContainer.className = 'item-image-container';
+                const image = document.createElement('img');
+                image.src = item.image_url;
+                image.alt = item.name;
+                image.className = 'item-image';
+                imageContainer.appendChild(image);
+                menuItem.appendChild(imageContainer);
+            }
 
             const contentContainer = document.createElement('div');
             contentContainer.className = 'item-content';
