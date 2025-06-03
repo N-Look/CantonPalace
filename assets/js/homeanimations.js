@@ -71,7 +71,7 @@ const observerOptions = {
     if (CTA) {
       CTA.addEventListener("click", () => {
         console.log("Navigate to menu page")
-        window.location.href = 'menu.html';
+        window.location.href = '/menu';
       })
     }
   
