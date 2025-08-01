@@ -349,18 +349,66 @@ function viewItem(itemId) {
     editItem(itemId);
 }
 
-// Image preview handler
-document.getElementById('itemImage').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        currentImageFile = file;
+// Image preview & compression handler
+// Compress image before preview and upload
+// Helper to compress image using canvas
+async function compressImage(file, quality = 0.7, maxWidth = 1024, maxHeight = 1024) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
         const reader = new FileReader();
         reader.onload = function(e) {
-            const preview = document.getElementById('imagePreview');
-            preview.style.display = 'block';
-            preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+            img.src = e.target.result;
         };
+        img.onload = function() {
+            let width = img.width;
+            let height = img.height;
+            // Scale down if needed
+            if (width > maxWidth || height > maxHeight) {
+                if (width / maxWidth > height / maxHeight) {
+                    height = Math.round(height * (maxWidth / width));
+                    width = maxWidth;
+                } else {
+                    width = Math.round(width * (maxHeight / height));
+                    height = maxHeight;
+                }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            canvas.toBlob(
+                blob => {
+                    if (blob) resolve(blob);
+                    else reject(new Error('Compression failed'));
+                },
+                'image/jpeg',
+                quality
+            );
+        };
+        img.onerror = reject;
         reader.readAsDataURL(file);
+    });
+}
+
+document.getElementById('itemImage').addEventListener('change', async function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        // Compress image before preview/upload
+        try {
+            const compressedBlob = await compressImage(file, 0.7, 1024, 1024);
+            currentImageFile = new File([compressedBlob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' });
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('imagePreview');
+                preview.style.display = 'block';
+                preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+            };
+            reader.readAsDataURL(currentImageFile);
+        } catch (err) {
+            showStatusMessage('Image compression failed. Try a different image.', 'error');
+            currentImageFile = null;
+        }
     }
 });
 

@@ -32,7 +32,6 @@ function displayDesktopMenuItems(items, category) {
         menuIntro.style.display = 'none';
     }
 
-    // Group and display items as before
     const groupedItems = groupItemsByCategory(items);
     displayGroupedItems(groupedItems, menuItems);
 }
@@ -44,7 +43,6 @@ function displayMobileMenuItems(items, categoryId) {
     
     menuItems.innerHTML = '';
     
-    // Group and display items
     const groupedItems = groupItemsByCategory(items);
     
     Object.entries(groupedItems).forEach(([subcategory, subcategoryItems]) => {
@@ -57,7 +55,6 @@ function displayMobileMenuItems(items, categoryId) {
             const menuItem = document.createElement('div');
             menuItem.className = 'menu-item';
             
-            // Add has-image class if the item has an image
             if (item.image_url) {
                 menuItem.classList.add('has-image');
             }
@@ -86,7 +83,6 @@ function displayMobileMenuItems(items, categoryId) {
                 contentContainer.appendChild(description);
             }
 
-            // Create image container but keep it hidden initially
             if (item.image_url) {
                 const imageContainer = document.createElement('div');
                 imageContainer.className = 'item-image-container';
@@ -97,9 +93,7 @@ function displayMobileMenuItems(items, categoryId) {
                 imageContainer.appendChild(image);
                 contentContainer.appendChild(imageContainer);
 
-                // Add click handler to toggle image
                 menuItem.addEventListener('click', function(e) {
-                    // Don't toggle if clicking on the image itself
                     if (e.target.classList.contains('item-image')) {
                         return;
                     }
