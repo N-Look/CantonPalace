@@ -340,7 +340,6 @@ footer {
 }
 
 .item-image {
-  width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
@@ -848,25 +847,38 @@ footer {
 }
 
 .mobile-menu .item-image-container {
-  display: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  height: 240px;
-  margin-top: 12px;
+  height: auto;
+  margin: 12px auto;
   border-radius: 6px;
   overflow: hidden;
   background: #f8f8f8;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+  margin-top: 0;
 }
 
 .mobile-menu .item-image-container.active {
   display: block;
   animation: slideDown 0.3s ease-out;
+  max-height: fit-content;
+  max-width: 90%;
+  opacity: 1;
+  margin: 12px auto;
 }
 
 .mobile-menu .item-image {
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: cover;
+  margin: 0 auto;
+  display: block;
 }
 
 .mobile-menu .menu-item:active {
@@ -898,20 +910,6 @@ footer {
 
 .mobile-menu .menu-item.has-image.expanded .item-header:before {
   transform: translateY(-50%) rotate(90deg);
-}
-
-.mobile-menu .item-image-container {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease, opacity 0.3s ease;
-  opacity: 0;
-  margin-top: 0;
-}
-
-.mobile-menu .item-image-container.active {
-  max-height: 300px; /* Adjust based on your image sizes */
-  opacity: 1;
-  margin-top: 12px;
 }
 
 @keyframes slideDown {
